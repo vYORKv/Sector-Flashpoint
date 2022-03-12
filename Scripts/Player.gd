@@ -82,6 +82,7 @@ func _set_rotation(new_transform):
 
 func shoot():
 	var bullet = BULLET.instance()
+	bullet.target = "enemy"
 	get_parent().add_child(bullet)
 	bullet.position = Gun.global_position
 	bullet.velocity = Aim.global_position - bullet.position

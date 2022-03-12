@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/Dummy.gd" type="Script" id=1]
+[ext_resource path="res://Graphics/Ships/Red_Ships/red_fighter.png" type="Texture" id=2]
+
+[node name="Dummy" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( 7.08706, -4.2319, 7.00831, 4.27257, 1.02369, 7.26488, -4.33098, 7.26488, -6.22086, 5.06002, -7.24455, 1.91022, -7.24455, -2.10578, -6.06337, -5.17684, -4.09474, -7.06672, 0.944939, -7.14546 )
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HurtBox"]
+polygon = PoolVector2Array( 7.08706, -4.2319, 7.00831, 4.27257, 1.02369, 7.26488, -4.33098, 7.26488, -6.22086, 5.06002, -7.24455, 1.91022, -7.24455, -2.10578, -6.06337, -5.17684, -4.09474, -7.06672, 0.944939, -7.14546 )
