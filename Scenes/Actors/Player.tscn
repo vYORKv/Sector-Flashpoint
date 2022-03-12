@@ -24,3 +24,9 @@ position = Vector2( -13, 0 )
 rotation = 1.5708
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 3 )
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="Gun" type="Position2D" parent="."]
+position = Vector2( 8, 0 )
+scale = Vector2( 0.25, 0.25 )

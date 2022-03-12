@@ -1,16 +1,20 @@
+class_name Ally
 extends KinematicBody2D
 
-const acceleration = 5
-const friction = 4
-const speed = 10
-const turn_speed = 0.2
+const ACCELERATION = 5
+const FRICTION = 4
+const SPEED = 10
+const TURN_SPEED = 0.2
 
 var velocity = Vector2.ZERO
 var combat_speed = true
 var max_speed = 3
 
+const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
+
 onready var TweenNode = get_node("Tween")
 onready var Thruster = get_node("Thruster")
+onready var Gun = get_node("Gun")
 
 func _ready():
 	pass
@@ -20,9 +24,16 @@ func _input(event):
 		if combat_speed == true:
 			max_speed = max_speed * .45
 			combat_speed = false
+			print(max_speed)
 		else:
 			max_speed = 3
 			combat_speed = true
+			print(max_speed)
+	if event.is_action_pressed("shoot"): # This is garbage code
+		print("shoot")
+		var bullet = BULLET.instance()
+		get_parent().add_child(bullet)
+		bullet.position = Gun.global_position
 
 func _physics_process(delta):
 	var mouse_position = get_global_mouse_position()
@@ -34,27 +45,26 @@ func _physics_process(delta):
 	var final_transform_x = (mouse_position - self.global_position).normalized()
 	# interpolate
 	TweenNode.interpolate_method(self, '_set_rotation', initial_transform_x, 
-	final_transform_x, turn_speed, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	final_transform_x, TURN_SPEED, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 	TweenNode.start()
 	look_at(mouse_position)
 	
 	if Input.get_action_strength("forward"):
-		velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
+		velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
 		Thruster.set_visible(true)
 	elif Input.get_action_strength("reverse"):
-		velocity = velocity.move_toward(-direction * (max_speed * .6), acceleration * delta)
+		velocity = velocity.move_toward(-direction * (max_speed * .6), ACCELERATION * delta)
 		Thruster.set_visible(false)
 	elif Input.get_action_strength("strafe_left"):
-		velocity = velocity.move_toward(direction_x * (max_speed * .6), acceleration * delta)
+		velocity = velocity.move_toward(direction_x * (max_speed * .6), ACCELERATION * delta)
 		Thruster.set_visible(false)
 	elif Input.get_action_strength("strafe_right"):
-		velocity = velocity.move_toward(-direction_x * (max_speed * .6), acceleration * delta)
+		velocity = velocity.move_toward(-direction_x * (max_speed * .6), ACCELERATION * delta)
 		Thruster.set_visible(false)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		Thruster.set_visible(false)
 	move_and_collide(velocity)
-	print(max_speed)
 
 func _set_rotation(new_transform):
 	# apply tweened x-vector of basis
