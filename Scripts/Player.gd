@@ -10,6 +10,7 @@ var combat_speed = true
 var max_speed = 3
 
 onready var TweenNode = get_node("Tween")
+onready var Thruster = get_node("Thruster")
 
 func _ready():
 	pass
@@ -39,14 +40,19 @@ func _physics_process(delta):
 	
 	if Input.get_action_strength("forward"):
 		velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
+		Thruster.set_visible(true)
 	elif Input.get_action_strength("reverse"):
 		velocity = velocity.move_toward(-direction * (max_speed * .6), acceleration * delta)
+		Thruster.set_visible(false)
 	elif Input.get_action_strength("strafe_left"):
 		velocity = velocity.move_toward(direction_x * (max_speed * .6), acceleration * delta)
+		Thruster.set_visible(false)
 	elif Input.get_action_strength("strafe_right"):
 		velocity = velocity.move_toward(-direction_x * (max_speed * .6), acceleration * delta)
+		Thruster.set_visible(false)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		Thruster.set_visible(false)
 	move_and_collide(velocity)
 	print(max_speed)
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/Ships/Blue_Ships/blue_fighter.png" type="Texture" id=2]
+[ext_resource path="res://Graphics/Propulsion/blue_main_thrust.png" type="Texture" id=3]
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -16,3 +17,10 @@ texture = ExtResource( 2 )
 polygon = PoolVector2Array( 7.0625, -0.0625, 7.0625, 1.03125, 6, 2.0625, 1, 5.03125, -2.96875, 6.0625, -7.03125, 6.03125, -6.9375, -6, -3.03125, -6, 0.96875, -5, 6, -2, 7, -0.96875 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="Thruster" type="Sprite" parent="."]
+visible = false
+position = Vector2( -13, 0 )
+rotation = 1.5708
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 3 )
