@@ -30,3 +30,7 @@ texture = ExtResource( 3 )
 [node name="Gun" type="Position2D" parent="."]
 position = Vector2( 8, 0 )
 scale = Vector2( 0.25, 0.25 )
+
+[node name="Aim" type="Position2D" parent="."]
+position = Vector2( 16, 0 )
+scale = Vector2( 0.25, 0.25 )

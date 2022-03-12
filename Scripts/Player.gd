@@ -9,15 +9,23 @@ const TURN_SPEED = 0.2
 var velocity = Vector2.ZERO
 var combat_speed = true
 var max_speed = 3
+var can_shoot = true
+var fire_rate = .5
 
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 
 onready var TweenNode = get_node("Tween")
 onready var Thruster = get_node("Thruster")
 onready var Gun = get_node("Gun")
+onready var Aim = get_node("Aim")
+onready var ShootTimer = get_node("ShootTimer")
 
 func _ready():
-	pass
+	ShootTimer.set_wait_time(fire_rate)
+	ShootTimer.connect("timeout", self, "TimerTimeout")
+
+func TimerTimeout():
+	can_shoot = true
 
 func _input(event):
 	if event.is_action_pressed("combat_speed"):
@@ -30,10 +38,10 @@ func _input(event):
 			combat_speed = true
 			print(max_speed)
 	if event.is_action_pressed("shoot"): # This is garbage code
-		print("shoot")
-		var bullet = BULLET.instance()
-		get_parent().add_child(bullet)
-		bullet.position = Gun.global_position
+		if can_shoot:
+			shoot()
+			can_shoot = false
+			ShootTimer.start()
 
 func _physics_process(delta):
 	var mouse_position = get_global_mouse_position()
@@ -71,3 +79,10 @@ func _set_rotation(new_transform):
 	self.transform.x = new_transform
 	# make x and y orthogonal and normalized
 	self.transform = self.transform.orthonormalized()
+
+func shoot():
+	var bullet = BULLET.instance()
+	get_parent().add_child(bullet)
+	bullet.position = Gun.global_position
+	bullet.velocity = Aim.global_position - bullet.position
+	

@@ -1,4 +1,4 @@
-extends Area2D
+extends KinematicBody2D
 
 const SPEED = 300
 
@@ -12,5 +12,4 @@ func _ready():
 
 # Nowhere close to final implementation. Just wanted to see it in action
 func _physics_process(delta):
-	velocity.x = SPEED * delta
-	translate(velocity)
+	var collision = move_and_collide(velocity.normalized() * delta * SPEED)
