@@ -2,10 +2,9 @@ class_name Enemy
 extends KinematicBody2D
 
 var hitpoints = 3
+var alliance = "red"
 
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
-
-onready var CenterPoint = get_node("CenterPoint")
 
 func _ready():
 	pass
@@ -17,8 +16,8 @@ func hit():
 		destroy()
 
 func destroy():
-	var center_point = CenterPoint.global_position
 	var explosion = EXPLOSION.instance()
+	explosion.color = "red"
 	get_parent().add_child(explosion)
-#	explosion.position = center_point.position
+	explosion.position = self.position
 	self.queue_free()

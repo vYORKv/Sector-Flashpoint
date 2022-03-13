@@ -26,4 +26,6 @@ collision_mask = 2
 scale = Vector2( 0.22, 0.22 )
 shape = SubResource( 1 )
 
+[node name="BulletTimer" type="Timer" parent="."]
+
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]

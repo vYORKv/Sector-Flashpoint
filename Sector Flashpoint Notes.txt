@@ -5,6 +5,8 @@ Sector Flashpoint Notes
 * Jockey: Pilot of fighter ships
 * Coporation: Able to maintain private military and govern moons/stations while imposing laws internally and waging war against other corporations (ULC)
 * LLC: Limited license corporation, regular businesses that don't have the sovereignty and authority of corporations
+* Shields and bullets(energy shots) are embedded with a frequency that communicate whether they are hitting a friendly target, cause bullets to disperse energy before damage is done to the shields 
+
 
 Characters
 - Omni: Handler, Mission Control for player wing
@@ -13,3 +15,7 @@ Characters
 - ???: Me, other member of wing, more serious than Kuma, but plays off him
 - ???: Player
 
+
+Bigger Design Ideas
+- Add drop-bombs that drop below ship with spacebar. Any entity in blast radius takes damage (including friendlies)
+- Add guided missles that follow mouse to destination--fired with right-click. Upon explosion, damages all entities in blast radius (including friendlies)

@@ -11,8 +11,10 @@ var combat_speed = true
 var max_speed = 3
 var can_shoot = true
 var fire_rate = .5
+var alliance = "blue"
 
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
+const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
 onready var TweenNode = get_node("Tween")
 onready var Thruster = get_node("Thruster")
@@ -45,6 +47,8 @@ func _input(event):
 			shoot()
 			can_shoot = false
 			ShootTimer.start()
+	if event.is_action_pressed("ui_accept"):
+		destroy()
 
 func _physics_process(delta):
 	var mouse_position = get_global_mouse_position()
@@ -86,7 +90,17 @@ func _set_rotation(new_transform):
 func shoot():
 	var bullet = BULLET.instance()
 	bullet.target = "enemy"
+	bullet.color = "blue"
 	get_parent().add_child(bullet)
 	bullet.position = Gun.global_position
 	bullet.velocity = Aim.global_position - bullet.position
-	
+
+func hit():
+	pass
+
+func destroy():
+	var explosion = EXPLOSION.instance()
+	explosion.color = "blue"
+	get_parent().add_child(explosion)
+	explosion.position = self.position
+#	self.queue_free()

@@ -1,8 +1,0 @@
-- Implement explosion class (color dynamically pulled from parent node class)
-- Instance explosion on dummy death
-- Add hit effects for bullet (turns to yellow)
-- Despawn bullets after set time
-- Add sfx for shooting, thrusters, explosion
-
-
-??? Should I make the explosions move in the direction of travel for the parent node? * No. I'm going to add a "death" state where the ship stops moving and has a static electricity effect playing over top of the ship as it floats helplessly through space. After 2 seconds, the ship explodes and we instance the explosion. Logically, this makes sense as explosions seen in atmosphere don't move but instead take produce a blast in position of creation.
