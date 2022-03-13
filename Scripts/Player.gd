@@ -24,6 +24,9 @@ func _ready():
 	ShootTimer.set_wait_time(fire_rate)
 	ShootTimer.connect("timeout", self, "TimerTimeout")
 
+func debug():
+	pass
+
 func TimerTimeout():
 	can_shoot = true
 
@@ -37,7 +40,7 @@ func _input(event):
 			max_speed = 3
 			combat_speed = true
 			print(max_speed)
-	if event.is_action_pressed("shoot"): # This is garbage code
+	if event.is_action_pressed("shoot"):
 		if can_shoot:
 			shoot()
 			can_shoot = false
