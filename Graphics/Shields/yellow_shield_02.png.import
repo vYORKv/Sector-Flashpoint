@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/green_shield.png-5ba7edb26d1fe663f764af2588249046.stex"
+path="res://.import/yellow_shield_02.png-66388784badb373e15d5eae1286996f9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/Shields/green_shield.png"
-dest_files=[ "res://.import/green_shield.png-5ba7edb26d1fe663f764af2588249046.stex" ]
+source_file="res://Graphics/Shields/yellow_shield_02.png"
+dest_files=[ "res://.import/yellow_shield_02.png-66388784badb373e15d5eae1286996f9.stex" ]
 
 [params]
 

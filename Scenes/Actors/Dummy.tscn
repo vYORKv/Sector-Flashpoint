@@ -1,7 +1,20 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Dummy.gd" type="Script" id=1]
 [ext_resource path="res://Graphics/Ships/Red_Ships/red_fighter.png" type="Texture" id=2]
+[ext_resource path="res://Graphics/Shields/red_shield_01.png" type="Texture" id=3]
+[ext_resource path="res://Graphics/Shields/red_shield_03.png" type="Texture" id=4]
+[ext_resource path="res://Graphics/Shields/red_shield_02.png" type="Texture" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 3 ), ExtResource( 5 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "default",
+"speed": 12.0
+} ]
 
 [node name="Dummy" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -18,3 +31,18 @@ collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HurtBox"]
 polygon = PoolVector2Array( 7.08706, -4.2319, 7.00831, 4.27257, 1.02369, 7.26488, -4.33098, 7.26488, -6.22086, 5.06002, -7.24455, 1.91022, -7.24455, -2.10578, -6.06337, -5.17684, -4.09474, -7.06672, 0.944939, -7.14546 )
+
+[node name="ShieldArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShieldArea"]
+scale = Vector2( 1.25, 1.25 )
+shape = SubResource( 1 )
+
+[node name="Shield" type="AnimatedSprite" parent="."]
+visible = false
+frames = SubResource( 2 )
+offset = Vector2( 8, 0 )
+
+[connection signal="animation_finished" from="Shield" to="." method="_on_Shield_animation_finished"]

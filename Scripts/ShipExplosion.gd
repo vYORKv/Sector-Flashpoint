@@ -2,12 +2,12 @@ extends Node2D
 
 onready var animation = get_node("AnimatedSprite")
 
-var color = null
+var alliance = null
 
 func _ready():
-	if color == "red":
+	if alliance == "red":
 		animation.set_animation("red_explosion")
-	elif color == "blue":
+	elif alliance == "blue":
 		animation.set_animation("blue_explosion")
 	animation._set_playing(true)
 

@@ -88,9 +88,10 @@ func _set_rotation(new_transform):
 	self.transform = self.transform.orthonormalized()
 
 func shoot():
+	print("*")
 	var bullet = BULLET.instance()
 	bullet.target = "enemy"
-	bullet.color = "blue"
+	bullet.alliance = alliance
 	get_parent().add_child(bullet)
 	bullet.position = Gun.global_position
 	bullet.velocity = Aim.global_position - bullet.position
@@ -100,7 +101,7 @@ func hit():
 
 func destroy():
 	var explosion = EXPLOSION.instance()
-	explosion.color = "blue"
+	explosion.alliance = alliance
 	get_parent().add_child(explosion)
 	explosion.position = self.position
 #	self.queue_free()

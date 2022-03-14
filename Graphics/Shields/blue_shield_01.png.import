@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/red_shield.png-d450152a05702750d47d00e875b9ac20.stex"
+path="res://.import/blue_shield_01.png-58938e2520bacdcf3feac6576e5e693a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Graphics/Shields/red_shield.png"
-dest_files=[ "res://.import/red_shield.png-d450152a05702750d47d00e875b9ac20.stex" ]
+source_file="res://Graphics/Shields/blue_shield_01.png"
+dest_files=[ "res://.import/blue_shield_01.png-58938e2520bacdcf3feac6576e5e693a.stex" ]
 
 [params]
 
