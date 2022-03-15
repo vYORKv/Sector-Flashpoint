@@ -19,3 +19,11 @@ Characters
 Bigger Design Ideas
 - Add drop-bombs that drop below ship with spacebar. Any entity in blast radius takes damage (including friendlies)
 - Add guided missles that follow mouse to destination--fired with right-click. Upon explosion, damages all entities in blast radius (including friendlies)
+- Add Time Trials mode. Tracks that have bombs all along the borders. If you touch a bomb, you blow up and have to start all over again. Attempting to get to end of track in fastest amount of time.
+
+
+Multiplayer Ideas
+- Create a stand-alone multiplayer version of the game after the main game is finished.
+- Up to 4v4v4v4 1-life deathmatches. Can pick a few different maps.
+- Race mode. Racing around track as fast as possible. Edge of track is bombs again. Each ship has repulsors with cooldown. Repulsors violently push away other ships caught in radius. First ship to finish x laps wins.
+- Time trial. Can ghost race each other in time trial mode that appears in single-player game.

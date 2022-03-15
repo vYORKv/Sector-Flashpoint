@@ -10,9 +10,11 @@ const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
 onready var ShieldArea = get_node("ShieldArea")
 onready var Shield = get_node("Shield")
+onready var polygon = get_node("CollisionPolygon2D")
 
 func _ready():
-	pass
+	var poly = polygon.get_polygon() # Will need to use polygon array to set shapes for each ship on spawn
+	print(poly)
 
 func hit(bullet):
 	if shields_active:

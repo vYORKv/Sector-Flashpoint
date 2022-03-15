@@ -21,6 +21,8 @@ onready var Thruster = get_node("Thruster")
 onready var Gun = get_node("Gun")
 onready var Aim = get_node("Aim")
 onready var ShootTimer = get_node("ShootTimer")
+onready var ShootSFX = get_node("ShootSFX")
+onready var ThrusterSFX = get_node("ThrusterSFX")
 
 func _ready():
 	ShootTimer.set_wait_time(fire_rate)
@@ -49,6 +51,11 @@ func _input(event):
 			ShootTimer.start()
 	if event.is_action_pressed("ui_accept"):
 		destroy()
+	if event.is_action_pressed("forward"):
+		ThrusterSFX.play()
+	if event.is_action_released("forward"):
+		ThrusterSFX.stop()
+
 
 func _physics_process(delta):
 	var mouse_position = get_global_mouse_position()
@@ -95,6 +102,7 @@ func shoot():
 	get_parent().add_child(bullet)
 	bullet.position = Gun.global_position
 	bullet.velocity = Aim.global_position - bullet.position
+	ShootSFX.play()
 
 func hit():
 	pass
@@ -104,4 +112,6 @@ func destroy():
 	explosion.alliance = alliance
 	get_parent().add_child(explosion)
 	explosion.position = self.position
+	$Camera2D.queue_free()
+#	get_parent().add_child(Camera2D)  # Maybe create DeathCamera scene and instance here
 #	self.queue_free()

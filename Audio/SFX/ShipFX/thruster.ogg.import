@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/thruster.ogg-2eebcaafec7d9a3f099ed8099121de21.oggstr"
+
+[deps]
+
+source_file="res://Audio/SFX/ShipFX/thruster.ogg"
+dest_files=[ "res://.import/thruster.ogg-2eebcaafec7d9a3f099ed8099121de21.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

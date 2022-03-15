@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/explosion_1.wav-852875b5bfb134baefbed98f2c218243.sample"
+
+[deps]
+
+source_file="res://Audio/SFX/ShipFX/explosion_1.wav"
+dest_files=[ "res://.import/explosion_1.wav-852875b5bfb134baefbed98f2c218243.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

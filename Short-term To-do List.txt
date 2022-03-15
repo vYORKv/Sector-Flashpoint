@@ -1,7 +1,8 @@
-- Add hit effects for bullet (turns to yellow)
-- Add sfx for shooting, thrusters, explosion
+- Camera stays in place after player que_free() [Perhaps instance a new camera on death. And instance a new "ejected seat" node when ejecting that has a camera which lets you pan across the battlefield and watch it unfold]
 
 
 ??? Should I make the explosions move in the direction of travel for the parent node? * No. I'm going to add a "death" state where the ship stops moving and has a static electricity effect playing over top of the ship as it floats helplessly through space. After 2 seconds, the ship explodes and we instance the explosion. Logically, this makes sense as explosions seen in atmosphere don't move but instead take produce a blast in position of creation.
 
 ??? Should shields be the area2d that knockback on collisions? This would prevent players from clipping nose through shields to double-tap with shots
+
+??? Might need initial "push" sound for strafing and reversing, also might need engine idle sound when not moving forward.
