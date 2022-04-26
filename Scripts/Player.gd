@@ -23,6 +23,8 @@ onready var Aim = get_node("Aim")
 onready var ShootTimer = get_node("ShootTimer")
 onready var ShootSFX = get_node("ShootSFX")
 onready var ThrusterSFX = get_node("ThrusterSFX")
+onready var BumpSFX = get_node("BumpSFX")
+
 
 func _ready():
 	ShootTimer.set_wait_time(fire_rate)
@@ -86,7 +88,10 @@ func _physics_process(delta):
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		Thruster.set_visible(false)
-	move_and_collide(velocity)
+	var collision = move_and_collide(velocity)
+	if collision:
+		velocity = velocity.bounce(collision.normal)
+		BumpSFX.play()
 
 func _set_rotation(new_transform):
 	# apply tweened x-vector of basis
