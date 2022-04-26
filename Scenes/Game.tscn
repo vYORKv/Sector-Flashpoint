@@ -32,3 +32,12 @@ script = ExtResource( 2 )
 
 [node name="Player" parent="GameLaunch" instance=ExtResource( 1 )]
 position = Vector2( 23.2238, 16.856 )
+
+[node name="AsteroidSpawn1" type="Node2D" parent="GameLaunch"]
+position = Vector2( -67, 44 )
+
+[node name="AsteroidSpawn2" type="Node2D" parent="GameLaunch"]
+position = Vector2( 117, 49 )
+
+[node name="AsteroidSpawn3" type="Node2D" parent="GameLaunch"]
+position = Vector2( -31, -33 )
