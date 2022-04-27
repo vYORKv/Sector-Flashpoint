@@ -24,11 +24,15 @@ onready var ShootTimer = get_node("ShootTimer")
 onready var ShootSFX = get_node("ShootSFX")
 onready var ThrusterSFX = get_node("ThrusterSFX")
 onready var BumpSFX = get_node("BumpSFX")
+onready var ShipPolygon = get_node("ShipPolygon")
+onready var HurtPolygon = get_node("HurtBox/HurtPolygon")
 
 
 func _ready():
 	ShootTimer.set_wait_time(fire_rate)
 	ShootTimer.connect("timeout", self, "TimerTimeout")
+	var poly = ShipPolygon.get_polygon() # Will need to use polygon array to set shapes for each ship on spawn
+	print("Player  ", poly)
 
 func debug():
 	pass
