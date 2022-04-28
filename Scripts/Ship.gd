@@ -92,4 +92,4 @@ func SetStats():
 		elif alliance == "yellow":
 			ShipPolygon.set_polygon(yfi_poly)
 			HurtPolygon.set_polygon(yfi_poly)
-			ShipSprite.set_texture(GREEN_FIGHTER)
+			ShipSprite.set_texture(YELLOW_FIGHTER)
