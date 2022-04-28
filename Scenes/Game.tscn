@@ -50,3 +50,9 @@ position = Vector2( 79, -78 )
 
 [node name="ShipSpawn3" type="Node2D" parent="GameLaunch"]
 position = Vector2( 21, 119 )
+
+[node name="ShipSpawn4" type="Node2D" parent="GameLaunch"]
+position = Vector2( -149, -89 )
+
+[node name="ShipSpawn5" type="Node2D" parent="GameLaunch"]
+position = Vector2( -169, 84 )

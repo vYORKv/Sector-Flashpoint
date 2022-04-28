@@ -45,7 +45,7 @@ onready var ShieldArea = get_node("ShieldArea")
 onready var Shield = get_node("Shield")
 
 func _ready():
-	pass
+	SetStats()
 
 func hit(bullet):
 	if shields_active:

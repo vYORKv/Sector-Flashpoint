@@ -10,6 +10,10 @@ func _ready():
 		animation.set_animation("red_explosion")
 	elif alliance == "blue":
 		animation.set_animation("blue_explosion")
+	elif alliance == "green":
+		animation.set_animation("green_explosion")
+	elif alliance == "yellow":
+		animation.set_animation("yellow_explosion")
 	SFX.play()
 	animation.play()
 
