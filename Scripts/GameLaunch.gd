@@ -3,6 +3,7 @@ extends Node
 const DUMMY = preload("res://Scenes/Actors/Dummy.tscn")
 const DESIGN_SHIP = preload("res://Scenes/Actors/DesignShip.tscn")
 const AST_SM = preload("res://Scenes/Objects/AsteroidSmall.tscn")
+const CROSSHAIR = preload("res://Graphics/UI/green_crosshair.png")
 
 onready var AS1 = get_node("AsteroidSpawn1")
 onready var AS2 = get_node("AsteroidSpawn2")
@@ -24,3 +25,4 @@ func _ready():
 	var design_ship = DESIGN_SHIP.instance()
 	add_child(design_ship)
 	design_ship.position = SS1.global_position
+	Input.set_custom_mouse_cursor(CROSSHAIR)
