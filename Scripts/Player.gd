@@ -43,7 +43,7 @@ func TimerTimeout():
 func _input(event):
 	if event.is_action_pressed("combat_speed"):
 		if combat_speed == true:
-			max_speed = max_speed * .45
+			max_speed = 1.35
 			combat_speed = false
 			print(max_speed)
 		else:

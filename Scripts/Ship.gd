@@ -6,6 +6,9 @@ var shields_active = true
 var alliance = ""
 var type = ""
 
+var max_speed = 0
+var fire_rate = 0
+
 var rfi_poly = PoolVector2Array([Vector2(-7, -2), Vector2(-7, 2), Vector2(-6, 5), Vector2(-4, 7), Vector2(1, 7), Vector2(4, 6), Vector2(6, 5), Vector2(7, 4), Vector2(7, -4), Vector2(6, -5), Vector2(4, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-6, -5)])
 var bfi_poly = PoolVector2Array([Vector2(-7, 6), Vector2(-3, 6), Vector2(1, 5), Vector2(1, 2), Vector2(6, 2), Vector2(7, 1), Vector2(7, -1), Vector2(6, -2), Vector2(1, -2), Vector2(1, -5), Vector2(-3, -6), Vector2(-7, -6)])
 var gfi_poly = PoolVector2Array([Vector2(6, 4), Vector2(6, -4), Vector2(2, -4), Vector2(2, -7), Vector2(-3, -7), Vector2(-6, -4), Vector2(-6, 4), Vector2(-3, 7), Vector2(2, 7), Vector2(2, 4)])
@@ -69,3 +72,24 @@ func destroy():
 
 func _on_Shield_animation_finished():
 	Shield.set_visible(false)
+
+func SetStats():
+	if type == "fighter":
+		max_speed = 3
+		fire_rate = 0
+		if alliance == "red":
+			ShipPolygon.set_polygon(rfi_poly)
+			HurtPolygon.set_polygon(rfi_poly)
+			ShipSprite.set_texture(RED_FIGHTER)
+		elif alliance == "blue":
+			ShipPolygon.set_polygon(bfi_poly)
+			HurtPolygon.set_polygon(bfi_poly)
+			ShipSprite.set_texture(BlUE_FIGHTER)
+		elif alliance == "green":
+			ShipPolygon.set_polygon(gfi_poly)
+			HurtPolygon.set_polygon(gfi_poly)
+			ShipSprite.set_texture(GREEN_FIGHTER)
+		elif alliance == "yellow":
+			ShipPolygon.set_polygon(yfi_poly)
+			HurtPolygon.set_polygon(yfi_poly)
+			ShipSprite.set_texture(GREEN_FIGHTER)
