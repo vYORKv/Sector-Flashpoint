@@ -13,14 +13,14 @@ var rfi_poly = PoolVector2Array([Vector2(-7, -2), Vector2(-7, 2), Vector2(-6, 5)
 var bfi_poly = PoolVector2Array([Vector2(-7, 6), Vector2(-3, 6), Vector2(1, 5), Vector2(1, 2), Vector2(6, 2), Vector2(7, 1), Vector2(7, -1), Vector2(6, -2), Vector2(1, -2), Vector2(1, -5), Vector2(-3, -6), Vector2(-7, -6)])
 var gfi_poly = PoolVector2Array([Vector2(6, 4), Vector2(6, -4), Vector2(2, -4), Vector2(2, -7), Vector2(-3, -7), Vector2(-6, -4), Vector2(-6, 4), Vector2(-3, 7), Vector2(2, 7), Vector2(2, 4)])
 var yfi_poly = PoolVector2Array([Vector2(6, 1), Vector2(6, -1), Vector2(3, -4), Vector2(3, -5), Vector2(5, -5), Vector2(5, -6), Vector2(0, -6), Vector2(0, -7), Vector2(-3, -7), Vector2(-6, -4), Vector2(-6, 4), Vector2(-3, 7), Vector2(0, 7), Vector2(0, 6), Vector2(5, 6), Vector2(5, 5), Vector2(3, 5), Vector2(3, 4)])
-var rfr_poly = []
-var bfr_poly = []
-var gfr_poly = []
-var yfr_poly = []
-var rbo_poly = []
-var bbo_poly = []
-var gbo_poly = []
-var ybo_poly = []
+var rfr_poly = PoolVector2Array([Vector2(4, 6), Vector2(4, 3), Vector2(7, 3), Vector2(8, 2), Vector2(8, -2), Vector2(7, -3), Vector2(4, -3), Vector2(4, -6), Vector2(1, -7), Vector2(-5, -7), Vector2(-7, -5), Vector2(-7, 5), Vector2(-5, 7), Vector2(1, 7)])
+var bfr_poly = PoolVector2Array([Vector2(-7, 6), Vector2(-3, 6), Vector2(6, 3), Vector2(7, 2), Vector2(7, -2), Vector2(6, -3), Vector2(-3, -6), Vector2(-7, -6)])
+var gfr_poly = PoolVector2Array([Vector2(4, 7), Vector2(4, 6), Vector2(3, 5), Vector2(3, 3), Vector2(5, 2), Vector2(6, 1), Vector2(6, -1), Vector2(5, -2), Vector2(3, -3), Vector2(3, -5), Vector2(4, -6), Vector2(4, -7), Vector2(-1, -7), Vector2(-5, -3), Vector2(-5, 3), Vector2(-1, 7)])
+var yfr_poly = PoolVector2Array([Vector2(3, 6), Vector2(3, 4), Vector2(4, 4), Vector2(7, 1), Vector2(7, -1), Vector2(4, -4), Vector2(3, -4), Vector2(3, -6), Vector2(-1, -7), Vector2(-4, -7), Vector2(-7, -4), Vector2(-7, 4), Vector2(-4, 7), Vector2(-1, 7)])
+var rbo_poly = PoolVector2Array([Vector2(1, 7), Vector2(4, 6), Vector2(6, 5), Vector2(8, 3), Vector2(8, -3), Vector2(6, -5), Vector2(4, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-6, -5), Vector2(-7, -2), Vector2(-7, 2), Vector2(-6, 5), Vector2(-4, 7)])
+var bbo_poly = PoolVector2Array([Vector2(-1, 7), Vector2(1, 6), Vector2(1, 5), Vector2(6, 5), Vector2(6, 1), Vector2(7, 1), Vector2(7, -1), Vector2(6, -1), Vector2(6, -5), Vector2(1, -5), Vector2(1, -6), Vector2(-1, -7), Vector2(-4, -7), Vector2(-4, -2), Vector2(-5, -2), Vector2(-5, 2), Vector2(-4, 2), Vector2(-4, 7)])
+var gbo_poly = PoolVector2Array([Vector2(1, 7), Vector2(3, 6), Vector2(6, 3), Vector2(6, -3), Vector2(3, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-4, -5), Vector2(-5, -3), Vector2(-5, 3), Vector2(-4, 5), Vector2(-4, 7)])
+var ybo_poly = PoolVector2Array([Vector2(2, 8), Vector2(2, 4), Vector2(6, 4), Vector2(8, 2), Vector2(8, -2), Vector2(6, -4), Vector2(2, -4), Vector2(2, -8), Vector2(-7, -8), Vector2(-7, 8)])
 
 const BlUE_FIGHTER = preload("res://Graphics/Ships/Blue_Ships/blue_fighter.png")
 const BlUE_FRIGATE = preload("res://Graphics/Ships/Blue_Ships/blue_frigate.png")
@@ -93,3 +93,41 @@ func SetStats():
 			ShipPolygon.set_polygon(yfi_poly)
 			HurtPolygon.set_polygon(yfi_poly)
 			ShipSprite.set_texture(YELLOW_FIGHTER)
+	elif type == "frigate":
+		max_speed = 3
+		fire_rate = 0
+		if alliance == "red":
+			ShipPolygon.set_polygon(rfr_poly)
+			HurtPolygon.set_polygon(rfr_poly)
+			ShipSprite.set_texture(RED_FRIGATE)
+		elif alliance == "blue":
+			ShipPolygon.set_polygon(bfr_poly)
+			HurtPolygon.set_polygon(bfr_poly)
+			ShipSprite.set_texture(BlUE_FRIGATE)
+		elif alliance == "green":
+			ShipPolygon.set_polygon(gfr_poly)
+			HurtPolygon.set_polygon(gfr_poly)
+			ShipSprite.set_texture(GREEN_FRIGATE)
+		elif alliance == "yellow":
+			ShipPolygon.set_polygon(yfr_poly)
+			HurtPolygon.set_polygon(yfr_poly)
+			ShipSprite.set_texture(YELLOW_FRIGATE)
+	elif type == "bomber":
+		max_speed = 3
+		fire_rate = 0
+		if alliance == "red":
+			ShipPolygon.set_polygon(rbo_poly)
+			HurtPolygon.set_polygon(rbo_poly)
+			ShipSprite.set_texture(RED_BOMBER)
+		elif alliance == "blue":
+			ShipPolygon.set_polygon(bbo_poly)
+			HurtPolygon.set_polygon(bbo_poly)
+			ShipSprite.set_texture(BlUE_BOMBER)
+		elif alliance == "green":
+			ShipPolygon.set_polygon(gbo_poly)
+			HurtPolygon.set_polygon(gbo_poly)
+			ShipSprite.set_texture(GREEN_BOMBER)
+		elif alliance == "yellow":
+			ShipPolygon.set_polygon(ybo_poly)
+			HurtPolygon.set_polygon(ybo_poly)
+			ShipSprite.set_texture(YELLOW_BOMBER)

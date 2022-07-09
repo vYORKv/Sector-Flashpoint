@@ -5,4 +5,10 @@
 
 ??? Should shields be the area2d that knockback on collisions? This would prevent players from clipping nose through shields to double-tap with shots
 
-??? Might need initial "push" sound for strafing and reversing, also might need engine idle sound when not moving forward.
+??? Might need initial "push" sound for strafing and reversing, also might need engine idle sound when not moving forward. [Definitely need idle engine sound]
+
+-- 0 hitpoints puts the ship in "death" state. Negative hitpoints instantly explodes ship.
+
+-- Bombs ignore shields and/or deal 2 hitpoints worth of damage.  ???More damage on bombs at the center of explosion as opposed to edge?***
+
+--- Self-create large asteroids

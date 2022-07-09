@@ -32,10 +32,10 @@ func _ready():
 	design_ship.position = SS1.global_position
 	Input.set_custom_mouse_cursor(CROSSHAIR)
 	
-	ShipSpawner("fighter", "blue", SS2.global_position)
-	ShipSpawner("fighter", "red", SS3.global_position)
-	ShipSpawner("fighter", "green", SS4.global_position)
-	ShipSpawner("fighter", "yellow", SS5.global_position)
+	ShipSpawner("fighter", "yellow", SS2.global_position)
+	ShipSpawner("frigate", "yellow", SS3.global_position)
+	ShipSpawner("bomber", "yellow", SS4.global_position)
+	ShipSpawner("bomber", "blue", SS5.global_position)
 
 func ShipSpawner(type, alliance, spawn):
 	var ship = SHIP.instance()

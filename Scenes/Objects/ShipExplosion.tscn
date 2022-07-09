@@ -37,14 +37,14 @@
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 33 ), ExtResource( 34 ), ExtResource( 22 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 24 ) ],
-"loop": false,
-"name": "green_explosion",
-"speed": 12.0
-}, {
-"frames": [ ExtResource( 26 ), ExtResource( 27 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 29 ), ExtResource( 30 ) ],
+"frames": [ ExtResource( 26 ), ExtResource( 27 ), ExtResource( 25 ), ExtResource( 28 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 29 ), ExtResource( 30 ), null ],
 "loop": false,
 "name": "yellow_explosion",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 33 ), ExtResource( 34 ), ExtResource( 22 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 19 ), ExtResource( 21 ), ExtResource( 24 ), null ],
+"loop": false,
+"name": "green_explosion",
 "speed": 12.0
 }, {
 "frames": [ ExtResource( 1 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 7 ), null ],
