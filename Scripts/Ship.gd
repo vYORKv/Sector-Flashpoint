@@ -131,3 +131,8 @@ func SetStats():
 			ShipPolygon.set_polygon(ybo_poly)
 			HurtPolygon.set_polygon(ybo_poly)
 			ShipSprite.set_texture(YELLOW_BOMBER)
+
+func _on_DetectionRadius_area_entered(area):
+	print("detected")
+	var detected = area.get_parent()
+	print(detected.alliance)
