@@ -16,16 +16,16 @@ var alliance = "blue"
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
-onready var TweenNode = get_node("Tween")
-onready var Thruster = get_node("Thruster")
-onready var Gun = get_node("Gun")
-onready var Aim = get_node("Aim")
-onready var ShootTimer = get_node("ShootTimer")
-onready var ShootSFX = get_node("ShootSFX")
-onready var ThrusterSFX = get_node("ThrusterSFX")
-onready var BumpSFX = get_node("BumpSFX")
-onready var ShipPolygon = get_node("ShipPolygon")
-onready var HurtPolygon = get_node("HurtBox/HurtPolygon")
+onready var TweenNode = $Tween
+onready var Thruster = $Thruster
+onready var Gun = $Gun
+onready var Aim = $Aim
+onready var ShootTimer = $ShootTimer
+onready var ShootSFX = $ShootSFX
+onready var ThrusterSFX = $ThrusterSFX
+onready var BumpSFX = $BumpSFX
+onready var ShipPolygon = $ShipPolygon
+onready var HurtPolygon = $HurtBox/HurtPolygon
 
 
 func _ready():

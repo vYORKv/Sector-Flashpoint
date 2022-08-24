@@ -12,8 +12,8 @@ const RED_BULLET = preload("res://Graphics/Bullets/red_bullet.png")
 const GREEN_BULLET = preload("res://Graphics/Bullets/green_bullet.png")
 const YELLOW_BULLET = preload("res://Graphics/Bullets/yellow_bullet.png")
 
-onready var sprite = get_node("Sprite")
-onready var BulletTimer = get_node("BulletTimer")
+onready var sprite = $Sprite
+onready var BulletTimer = $BulletTimer
 
 func _ready():
 	if alliance == "blue":

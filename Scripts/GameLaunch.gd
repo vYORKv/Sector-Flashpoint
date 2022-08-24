@@ -6,14 +6,14 @@ const AST_SM = preload("res://Scenes/Objects/AsteroidSmall.tscn")
 const CROSSHAIR = preload("res://Graphics/UI/green_crosshair.png")
 const SHIP = preload("res://Scenes/Actors/Ship.tscn")
 
-onready var AS1 = get_node("AsteroidSpawn1")
-onready var AS2 = get_node("AsteroidSpawn2")
-onready var AS3 = get_node("AsteroidSpawn3")
-onready var SS1 = get_node("ShipSpawn1")
-onready var SS2 = get_node("ShipSpawn2")
-onready var SS3 = get_node("ShipSpawn3")
-onready var SS4 = get_node("ShipSpawn4")
-onready var SS5 = get_node("ShipSpawn5")
+onready var AS1 = $AsteroidSpawn1
+onready var AS2 = $AsteroidSpawn2
+onready var AS3 = $AsteroidSpawn3
+onready var SS1 = $ShipSpawn1
+onready var SS2 = $ShipSpawn2
+onready var SS3 = $ShipSpawn3
+onready var SS4 = $ShipSpawn4
+onready var SS5 = $ShipSpawn5
 
 func _ready():
 	var dummy = DUMMY.instance()

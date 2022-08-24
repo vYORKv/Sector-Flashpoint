@@ -38,11 +38,11 @@ const YELLOW_BOMBER = preload("res://Graphics/Ships/Yellow_Ships/yellow_bomber.p
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
-onready var ShipSprite = get_node("Sprite")
-onready var ShipPolygon = get_node("ShipPolygon")
-onready var HurtPolygon = get_node("Hurtbox/HurtPolygon")
-onready var ShieldArea = get_node("ShieldArea")
-onready var Shield = get_node("Shield")
+onready var ShipSprite = $Sprite
+onready var ShipPolygon = $ShipPolygon
+onready var HurtPolygon = $Hurtbox/HurtPolygon
+onready var ShieldArea = $ShieldArea
+onready var Shield = $Shield
 
 func _ready():
 	SetStats()

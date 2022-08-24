@@ -13,9 +13,9 @@ var bf_poly = PoolVector2Array([Vector2(7.0625, -0.0625), Vector2(7.0625, 1.0312
 
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
-onready var ShieldArea = get_node("ShieldArea")
-onready var Shield = get_node("Shield")
-onready var Polygon = get_node("CollisionPolygon2D")
+onready var ShieldArea = $ShieldArea
+onready var Shield = $Shield
+onready var Polygon = $CollisionPolygon2D
 
 func _ready():
 	var poly = Polygon.get_polygon() # Will need to use polygon array to set shapes for each ship on spawn

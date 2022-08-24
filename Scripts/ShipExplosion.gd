@@ -1,7 +1,7 @@
 extends Node2D
 
-onready var animation = get_node("AnimatedSprite")
-onready var SFX = get_node("SFX")
+onready var animation = $AnimatedSprite
+onready var SFX = $SFX
 
 var alliance = null
 
