@@ -21,6 +21,7 @@ var type = ""
 
 var max_speed = 0
 var fire_rate = 0
+var can_shoot = true
 
 var rfi_poly = PoolVector2Array([Vector2(-7, -2), Vector2(-7, 2), Vector2(-6, 5), Vector2(-4, 7), Vector2(1, 7), Vector2(4, 6), Vector2(6, 5), Vector2(7, 4), Vector2(7, -4), Vector2(6, -5), Vector2(4, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-6, -5)])
 var bfi_poly = PoolVector2Array([Vector2(-7, 6), Vector2(-3, 6), Vector2(1, 5), Vector2(1, 2), Vector2(6, 2), Vector2(7, 1), Vector2(7, -1), Vector2(6, -2), Vector2(1, -2), Vector2(1, -5), Vector2(-3, -6), Vector2(-7, -6)])
@@ -56,9 +57,17 @@ onready var ShipPolygon = $ShipPolygon
 onready var HurtPolygon = $Hurtbox/HurtPolygon
 onready var ShieldArea = $ShieldArea
 onready var Shield = $Shield
+onready var ShootTimer = $ShootTimer
+onready var Gun = $Gun
+onready var Aim = $Aim
 
 func _ready():
 	SetStats()
+	ShootTimer.set_wait_time(fire_rate)
+	ShootTimer.connect("timeout", self, "TimerTimeout")
+
+func TimerTimeout():
+	can_shoot = true
 
 func _physics_process(delta):
 #	var target_position = Vector2(5,5)
@@ -70,6 +79,10 @@ func _physics_process(delta):
 		var direction = (t_flank_pos - self.position).normalized()
 		velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
 		look_at(target_position)
+		if can_shoot:
+			shoot()
+			can_shoot = false
+			ShootTimer.start()
 	var collision = move_and_collide(velocity)
 	if collision:
 		velocity = velocity.bounce(collision.normal)
@@ -98,6 +111,15 @@ func hit(bullet):
 		shields_active = false
 		ShieldArea.set_deferred("monitorable", false)
 
+func shoot():
+	var bullet = BULLET.instance()
+	bullet.target = "enemy"
+	bullet.alliance = alliance
+	get_parent().add_child(bullet)
+	bullet.position = Gun.global_position
+	bullet.velocity = Aim.global_position - bullet.position
+#	ShootSFX.play()
+
 func destroy():
 	var explosion = EXPLOSION.instance()
 	explosion.alliance = alliance
@@ -111,7 +133,7 @@ func _on_Shield_animation_finished():
 func SetStats():
 	if type == "fighter":
 		max_speed = 3
-		fire_rate = 0
+		fire_rate = .75
 		shields = 2
 		if alliance == "red":
 			ShipPolygon.set_polygon(rfi_poly)
@@ -131,7 +153,7 @@ func SetStats():
 			ShipSprite.set_texture(YELLOW_FIGHTER)
 	elif type == "frigate":
 		max_speed = 3
-		fire_rate = 0
+		fire_rate = 1
 		shields = 2
 		if alliance == "red":
 			ShipPolygon.set_polygon(rfr_poly)
@@ -151,7 +173,7 @@ func SetStats():
 			ShipSprite.set_texture(YELLOW_FRIGATE)
 	elif type == "bomber":
 		max_speed = 3
-		fire_rate = 0
+		fire_rate = 1
 		shields = 3
 		if alliance == "red":
 			ShipPolygon.set_polygon(rbo_poly)
