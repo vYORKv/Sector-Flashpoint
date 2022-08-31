@@ -5,6 +5,7 @@ const DESIGN_SHIP = preload("res://Scenes/Actors/DesignShip.tscn")
 const AST_SM = preload("res://Scenes/Objects/AsteroidSmall.tscn")
 const CROSSHAIR = preload("res://Graphics/UI/green_crosshair.png")
 const SHIP = preload("res://Scenes/Actors/Ship.tscn")
+const PLAYER = preload("res://Scenes/Actors/Player.tscn")
 
 onready var AS1 = $AsteroidSpawn1
 onready var AS2 = $AsteroidSpawn2
@@ -14,10 +15,14 @@ onready var SS2 = $ShipSpawn2
 onready var SS3 = $ShipSpawn3
 onready var SS4 = $ShipSpawn4
 onready var SS5 = $ShipSpawn5
+onready var PS = $PlayerSpawn
 
 func _ready():
-	var dummy = DUMMY.instance()
-	add_child(dummy)
+	var player = PLAYER.instance()
+	add_child(player)
+	player.position = PS.global_position
+#	var dummy = DUMMY.instance()
+#	add_child(dummy)
 	var a1 = AST_SM.instance()
 	var a2 = AST_SM.instance()
 	var a3 = AST_SM.instance()
@@ -27,14 +32,14 @@ func _ready():
 	a1.position = AS1.global_position
 	a2.position = AS2.global_position
 	a3.position = AS3.global_position
-	var design_ship = DESIGN_SHIP.instance()
-	add_child(design_ship)
-	design_ship.position = SS1.global_position
+#	var design_ship = DESIGN_SHIP.instance()
+#	add_child(design_ship)
+#	design_ship.position = SS1.global_position
 	Input.set_custom_mouse_cursor(CROSSHAIR)
 	
-#	ShipSpawner("fighter", "yellow", SS2.global_position)
+	ShipSpawner("fighter", "yellow", SS2.global_position)
 #	ShipSpawner("frigate", "yellow", SS3.global_position)
-	ShipSpawner("bomber", "yellow", SS4.global_position)
+#	ShipSpawner("bomber", "yellow", SS4.global_position)
 #	ShipSpawner("bomber", "blue", SS5.global_position)
 
 func ShipSpawner(type, alliance, spawn):

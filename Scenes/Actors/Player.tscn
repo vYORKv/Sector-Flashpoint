@@ -8,6 +8,7 @@
 [ext_resource path="res://Audio/SFX/ShipFX/bump.wav" type="AudioStream" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6.16667, 10 )
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -61,6 +62,6 @@ collision_layer = 16
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Flank"]
-position = Vector2( -40, 0 )
+position = Vector2( -51.5, 0 )
 scale = Vector2( 3, 1.5 )
 shape = SubResource( 1 )

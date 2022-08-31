@@ -1,7 +1,20 @@
 extends KinematicBody2D
 
+const ACCELERATION = 5
+const FRICTION = 4
+const TURN_SPEED = 0.2
+
+enum {
+	SEARCH,
+	MOVE
+}
+
+var state = SEARCH
+var target = null
+
+var velocity = Vector2.ZERO
 var hitpoints = 1
-var shields = 3
+var shields = 0
 var shields_active = true
 var alliance = ""
 var type = ""
@@ -22,9 +35,9 @@ var bbo_poly = PoolVector2Array([Vector2(-1, 7), Vector2(1, 6), Vector2(1, 5), V
 var gbo_poly = PoolVector2Array([Vector2(1, 7), Vector2(3, 6), Vector2(6, 3), Vector2(6, -3), Vector2(3, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-4, -5), Vector2(-5, -3), Vector2(-5, 3), Vector2(-4, 5), Vector2(-4, 7)])
 var ybo_poly = PoolVector2Array([Vector2(2, 8), Vector2(2, 4), Vector2(6, 4), Vector2(8, 2), Vector2(8, -2), Vector2(6, -4), Vector2(2, -4), Vector2(2, -8), Vector2(-7, -8), Vector2(-7, 8)])
 
-const BlUE_FIGHTER = preload("res://Graphics/Ships/Blue_Ships/blue_fighter.png")
-const BlUE_FRIGATE = preload("res://Graphics/Ships/Blue_Ships/blue_frigate.png")
-const BlUE_BOMBER = preload("res://Graphics/Ships/Blue_Ships/blue_bomber.png")
+const BLUE_FIGHTER = preload("res://Graphics/Ships/Blue_Ships/blue_fighter.png")
+const BLUE_FRIGATE = preload("res://Graphics/Ships/Blue_Ships/blue_frigate.png")
+const BLUE_BOMBER = preload("res://Graphics/Ships/Blue_Ships/blue_bomber.png")
 const RED_FIGHTER = preload("res://Graphics/Ships/Red_Ships/red_fighter.png")
 const RED_FRIGATE = preload("res://Graphics/Ships/Red_Ships/red_frigate.png")
 const RED_BOMBER = preload("res://Graphics/Ships/Red_Ships/red_bomber.png")
@@ -46,6 +59,28 @@ onready var Shield = $Shield
 
 func _ready():
 	SetStats()
+
+func _physics_process(delta):
+#	var target_position = Vector2(5,5)
+#	var direction = (target_position - self.position).normalized()
+	if target:
+		var target_flank = target.get_node("Flank/CollisionShape2D")
+		var t_flank_pos = target_flank.global_position
+		var target_position = target.global_position
+		var direction = (t_flank_pos - self.position).normalized()
+		velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
+		look_at(target_position)
+	var collision = move_and_collide(velocity)
+	if collision:
+		velocity = velocity.bounce(collision.normal)
+#		BumpSFX.play()
+	
+	match state:
+		SEARCH:
+			pass
+		MOVE:
+			pass
+#	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
 
 func hit(bullet):
 	if shields_active:
@@ -77,6 +112,7 @@ func SetStats():
 	if type == "fighter":
 		max_speed = 3
 		fire_rate = 0
+		shields = 2
 		if alliance == "red":
 			ShipPolygon.set_polygon(rfi_poly)
 			HurtPolygon.set_polygon(rfi_poly)
@@ -84,7 +120,7 @@ func SetStats():
 		elif alliance == "blue":
 			ShipPolygon.set_polygon(bfi_poly)
 			HurtPolygon.set_polygon(bfi_poly)
-			ShipSprite.set_texture(BlUE_FIGHTER)
+			ShipSprite.set_texture(BLUE_FIGHTER)
 		elif alliance == "green":
 			ShipPolygon.set_polygon(gfi_poly)
 			HurtPolygon.set_polygon(gfi_poly)
@@ -96,6 +132,7 @@ func SetStats():
 	elif type == "frigate":
 		max_speed = 3
 		fire_rate = 0
+		shields = 2
 		if alliance == "red":
 			ShipPolygon.set_polygon(rfr_poly)
 			HurtPolygon.set_polygon(rfr_poly)
@@ -103,7 +140,7 @@ func SetStats():
 		elif alliance == "blue":
 			ShipPolygon.set_polygon(bfr_poly)
 			HurtPolygon.set_polygon(bfr_poly)
-			ShipSprite.set_texture(BlUE_FRIGATE)
+			ShipSprite.set_texture(BLUE_FRIGATE)
 		elif alliance == "green":
 			ShipPolygon.set_polygon(gfr_poly)
 			HurtPolygon.set_polygon(gfr_poly)
@@ -115,6 +152,7 @@ func SetStats():
 	elif type == "bomber":
 		max_speed = 3
 		fire_rate = 0
+		shields = 3
 		if alliance == "red":
 			ShipPolygon.set_polygon(rbo_poly)
 			HurtPolygon.set_polygon(rbo_poly)
@@ -122,7 +160,7 @@ func SetStats():
 		elif alliance == "blue":
 			ShipPolygon.set_polygon(bbo_poly)
 			HurtPolygon.set_polygon(bbo_poly)
-			ShipSprite.set_texture(BlUE_BOMBER)
+			ShipSprite.set_texture(BLUE_BOMBER)
 		elif alliance == "green":
 			ShipPolygon.set_polygon(gbo_poly)
 			HurtPolygon.set_polygon(gbo_poly)
@@ -133,6 +171,6 @@ func SetStats():
 			ShipSprite.set_texture(YELLOW_BOMBER)
 
 func _on_DetectionRadius_area_entered(area):
-	print("detected")
 	var detected = area.get_parent()
-	print(detected.alliance)
+	if detected.alliance != self.alliance:
+		target = detected

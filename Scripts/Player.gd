@@ -3,7 +3,7 @@ extends KinematicBody2D
 
 const ACCELERATION = 5
 const FRICTION = 4
-const SPEED = 10
+#const SPEED = 10
 const TURN_SPEED = 0.2
 
 var velocity = Vector2.ZERO
