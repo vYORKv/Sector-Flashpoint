@@ -9,9 +9,13 @@ const TURN_SPEED = 0.2
 var velocity = Vector2.ZERO
 var combat_speed = true
 var max_speed = 3
+var reloaded = true
 var can_shoot = true
 var fire_rate = .5
 var alliance = "blue"
+var hitpoints = 1
+var shields = 2
+var shields_active = true
 
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
@@ -26,18 +30,20 @@ onready var ThrusterSFX = $ThrusterSFX
 onready var BumpSFX = $BumpSFX
 onready var ShipPolygon = $ShipPolygon
 onready var HurtPolygon = $HurtBox/HurtPolygon
+onready var ShieldArea = $ShieldArea
+onready var Shield = $Shield
 
 
 func _ready():
 	ShootTimer.set_wait_time(fire_rate)
-	ShootTimer.connect("timeout", self, "TimerTimeout")
+	ShootTimer.connect("timeout", self, "Reload")
 	var poly = ShipPolygon.get_polygon() # Will need to use polygon array to set shapes for each ship on spawn
-	print("Player  ", poly)
 
 func debug():
 	pass
 
-func TimerTimeout():
+func Reload():
+	reloaded = true
 	can_shoot = true
 
 func _input(event):
@@ -53,6 +59,7 @@ func _input(event):
 	if event.is_action_pressed("shoot"):
 		if can_shoot:
 			shoot()
+			reloaded = false
 			can_shoot = false
 			ShootTimer.start()
 	if event.is_action_pressed("ui_accept"):
@@ -92,6 +99,7 @@ func _physics_process(delta):
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 		Thruster.set_visible(false)
+		
 	var collision = move_and_collide(velocity)
 	if collision:
 		velocity = velocity.bounce(collision.normal)
@@ -104,7 +112,6 @@ func _set_rotation(new_transform):
 	self.transform = self.transform.orthonormalized()
 
 func shoot():
-	print("*")
 	var bullet = BULLET.instance()
 	bullet.target = "enemy"
 	bullet.alliance = alliance
@@ -113,14 +120,31 @@ func shoot():
 	bullet.velocity = Aim.global_position - bullet.position
 	ShootSFX.play()
 
-func hit():
-	pass
+func hit(bullet):
+	if shields_active:
+		Shield.look_at(bullet)
+		Shield.set_frame(0)
+		Shield.set_visible(true)
+		Shield.play(alliance)
+		shields -= 1
+		print(shields)
+	else:
+		hitpoints -= 1
+		if hitpoints <= 0:
+			destroy()
+	if shields == 0:
+		shields_active = false
+		print(shields_active)
+		ShieldArea.set_deferred("monitorable", false)
 
 func destroy():
 	var explosion = EXPLOSION.instance()
 	explosion.alliance = alliance
 	get_parent().add_child(explosion)
 	explosion.position = self.position
-	$Camera2D.queue_free()
+#	$Camera2D.queue_free()
 #	get_parent().add_child(Camera2D)  # Maybe create DeathCamera scene and instance here
-#	self.queue_free()
+	self.queue_free()
+
+func _on_Shield_animation_finished():
+	Shield.set_visible(false)

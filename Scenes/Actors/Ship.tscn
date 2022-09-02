@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Graphics/Shields/red_shield_03.png" type="Texture" id=1]
 [ext_resource path="res://Graphics/Shields/red_shield_02.png" type="Texture" id=2]
@@ -13,29 +13,30 @@
 [ext_resource path="res://Graphics/Shields/blue_shield_01.png" type="Texture" id=11]
 [ext_resource path="res://Graphics/Shields/yellow_shield_01.png" type="Texture" id=12]
 [ext_resource path="res://Graphics/Shields/green_shield_02.png" type="Texture" id=13]
+[ext_resource path="res://Audio/SFX/ShipFX/shot.wav" type="AudioStream" id=14]
 
 [sub_resource type="CircleShape2D" id=1]
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 6 ) ],
-"loop": true,
-"name": "blue",
-"speed": 12.0
-}, {
 "frames": [ ExtResource( 10 ), ExtResource( 13 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "green",
 "speed": 12.0
 }, {
-"frames": [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 1 ) ],
+"frames": [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 6 ) ],
 "loop": true,
-"name": "red",
+"name": "blue",
 "speed": 12.0
 }, {
 "frames": [ ExtResource( 12 ), ExtResource( 7 ), ExtResource( 9 ) ],
 "loop": true,
 "name": "yellow",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "red",
 "speed": 12.0
 } ]
 
@@ -76,7 +77,7 @@ offset = Vector2( 8, 0 )
 [node name="Flank" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Flank"]
-position = Vector2( -51.5, 0 )
+position = Vector2( -70, 0 )
 scale = Vector2( 3, 1.5 )
 shape = SubResource( 3 )
 
@@ -93,6 +94,20 @@ scale = Vector2( 0.25, 0.25 )
 [node name="Aim" type="Position2D" parent="."]
 position = Vector2( 16, 0 )
 scale = Vector2( 0.25, 0.25 )
+
+[node name="ShootSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 14 )
+volume_db = -2.0
+
+[node name="ShootRange" type="RayCast2D" parent="."]
+rotation = -1.5708
+scale = Vector2( 0.5, 3 )
+enabled = true
+
+[node name="Buffer" type="RayCast2D" parent="."]
+rotation = -1.5708
+scale = Vector2( 0.5, 2 )
+enabled = true
 
 [connection signal="animation_finished" from="Shield" to="." method="_on_Shield_animation_finished"]
 [connection signal="area_entered" from="DetectionRadius" to="." method="_on_DetectionRadius_area_entered"]
