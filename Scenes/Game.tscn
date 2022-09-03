@@ -103,12 +103,13 @@ position = Vector2( -77, -501 )
 position = Vector2( 92, -514 )
 
 [node name="ShipSpawn15" type="Node2D" parent="GameLaunch"]
-position = Vector2( -5, -582 )
+position = Vector2( 4, -585 )
 
 [node name="PlayerSpawn" type="Node2D" parent="GameLaunch"]
 position = Vector2( -5, 819 )
 
 [node name="MovePoint" type="Node2D" parent="GameLaunch"]
+position = Vector2( 0, -6 )
 
 [node name="Dummy" parent="GameLaunch" instance=ExtResource( 1 )]
 position = Vector2( -14, 1095 )

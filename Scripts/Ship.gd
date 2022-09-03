@@ -2,16 +2,17 @@ extends KinematicBody2D
 
 const ACCELERATION = 5
 const FRICTION = 4
-const TURN_SPEED = 0.2
+const TURN_SPEED = 4
 
 enum {
+	IDLE,
 	SEARCH,
 	MOVE,
 	ENGAGE,
 	WING
 }
 
-var state = MOVE
+var state = ENGAGE
 var target = null
 var target_array = []
 
@@ -67,7 +68,7 @@ onready var Aim = $Aim
 onready var ShootRange = $ShootRange
 onready var ShootSFX = $ShootSFX
 onready var DetectionRadius = $DetectionRadius
-onready var Buffer = $Buffer
+onready var BufferRay = $Buffer
 
 func _ready():
 	SetStats()
@@ -85,7 +86,7 @@ func RangeCheck():
 		can_shoot = false
 
 func Buffer():
-	var buffer_target = Buffer.get_collider()
+	var buffer_target = BufferRay.get_collider()
 	if buffer_target and buffer_target.alliance != alliance:
 		return true
 
@@ -103,6 +104,8 @@ func _physics_process(delta):
 	RangeCheck()
 	
 	match state:
+		IDLE:
+			pass
 		SEARCH:
 			DetectionRadius.monitoring = false
 			DetectionRadius.monitoring = true
@@ -118,7 +121,7 @@ func _physics_process(delta):
 				var target_position = target.global_position
 				var direction = (t_flank_pos - self.position).normalized()
 				var direction_x = direction.tangent()
-				look_at(target_position)
+				TurnSpeed(target_position, delta)
 				if Buffer():
 					velocity = velocity.move_toward(direction_x * max_speed, ACCELERATION * delta)
 				else:
@@ -130,12 +133,22 @@ func _physics_process(delta):
 			else:
 				target = null
 				state = SEARCH
-	
 #	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
 	var collision = move_and_collide(velocity)
 	if collision:
 		velocity = velocity.bounce(collision.normal)
 #		BumpSFX.play()
+
+func TurnSpeed(target_position, delta):
+	var rotation_speed = TURN_SPEED
+	var v = target_position - global_position
+	var angle = v.angle()
+	var r = global_rotation
+	var angle_delta = rotation_speed * delta
+	angle = lerp_angle(r, angle, 1.0)
+	angle = clamp(angle, r - angle_delta, r + angle_delta)
+	global_rotation = angle
+	
 
 func move2(point):
 	pass
@@ -145,7 +158,7 @@ func move(delta):
 	var point_pos = point.global_position
 	var direction = (point_pos - self.position)
 	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
-	look_at(point_pos)
+	TurnSpeed(point_pos, delta)
 
 #func TargetCheck(array):
 #	var targets = array
@@ -191,7 +204,7 @@ func SetStats():
 	if type == "fighter":
 		max_speed = 3
 		fire_rate = .75
-		shields = 2
+		shields = 1
 		if alliance == "red":
 			ShipPolygon.set_polygon(rfi_poly)
 			HurtPolygon.set_polygon(rfi_poly)

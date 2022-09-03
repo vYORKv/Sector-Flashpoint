@@ -19,24 +19,24 @@
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 10 ), ExtResource( 13 ), ExtResource( 5 ) ],
-"loop": true,
-"name": "green",
-"speed": 12.0
-}, {
 "frames": [ ExtResource( 11 ), ExtResource( 8 ), ExtResource( 6 ) ],
 "loop": true,
 "name": "blue",
 "speed": 12.0
 }, {
-"frames": [ ExtResource( 12 ), ExtResource( 7 ), ExtResource( 9 ) ],
+"frames": [ ExtResource( 10 ), ExtResource( 13 ), ExtResource( 5 ) ],
 "loop": true,
-"name": "yellow",
+"name": "green",
 "speed": 12.0
 }, {
 "frames": [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 1 ) ],
 "loop": true,
 "name": "red",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 12 ), ExtResource( 7 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "yellow",
 "speed": 12.0
 } ]
 
@@ -97,7 +97,7 @@ scale = Vector2( 0.25, 0.25 )
 
 [node name="ShootSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 14 )
-volume_db = -2.0
+volume_db = -12.0
 
 [node name="ShootRange" type="RayCast2D" parent="."]
 rotation = -1.5708

@@ -20,7 +20,7 @@ var shields_active = true
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
-onready var TweenNode = $Tween
+onready var TurnSpeed = $Tween
 onready var Thruster = $Thruster
 onready var Gun = $Gun
 onready var Aim = $Aim
@@ -79,9 +79,9 @@ func _physics_process(delta):
 	var initial_transform_x = self.transform.x
 	var final_transform_x = (mouse_position - self.global_position).normalized()
 	# interpolate
-	TweenNode.interpolate_method(self, '_set_rotation', initial_transform_x, 
+	TurnSpeed.interpolate_method(self, '_set_rotation', initial_transform_x, 
 	final_transform_x, TURN_SPEED, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	TweenNode.start()
+	TurnSpeed.start()
 	look_at(mouse_position)
 	
 	if Input.get_action_strength("forward"):
