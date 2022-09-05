@@ -91,10 +91,10 @@ func _physics_process(delta):
 		velocity = velocity.move_toward(-direction * (max_speed * .6), ACCELERATION * delta)
 		Thruster.set_visible(false)
 	elif Input.get_action_strength("strafe_left"):
-		velocity = velocity.move_toward(direction_x * (max_speed * .6), ACCELERATION * delta)
+		velocity = velocity.move_toward(direction_x * (max_speed), ACCELERATION * delta) #Was (max_speed * .6)
 		Thruster.set_visible(false)
 	elif Input.get_action_strength("strafe_right"):
-		velocity = velocity.move_toward(-direction_x * (max_speed * .6), ACCELERATION * delta)
+		velocity = velocity.move_toward(-direction_x * (max_speed), ACCELERATION * delta) #Was (max_speed * .6)
 		Thruster.set_visible(false)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)

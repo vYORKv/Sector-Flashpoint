@@ -90,14 +90,14 @@ func SpawnShips():
 #	s5 = ShipSpawner("fighter", "red", SS5.global_position)
 #	s6 = ShipSpawner("fighter", "red", SS6.global_position)
 #	s7 = ShipSpawner("fighter", "red", SS7.global_position)
-	s8 = ShipSpawner("fighter", "yellow", SS8.global_position)
-	s9 = ShipSpawner("fighter", "yellow", SS9.global_position)
-	s10 = ShipSpawner("fighter", "yellow", SS10.global_position)
-	s11 = ShipSpawner("fighter", "yellow", SS11.global_position)
+#	s8 = ShipSpawner("fighter", "yellow", SS8.global_position)
+#	s9 = ShipSpawner("fighter", "yellow", SS9.global_position)
+#	s10 = ShipSpawner("fighter", "yellow", SS10.global_position)
+#	s11 = ShipSpawner("fighter", "yellow", SS11.global_position)
 #	s12 = ShipSpawner("fighter", "green", SS12.global_position)
 #	s13 = ShipSpawner("fighter", "green", SS13.global_position)
 #	s14 = ShipSpawner("fighter", "green", SS14.global_position)
-#	s15 = ShipSpawner("fighter", "green", SS15.global_position)
+	s15 = ShipSpawner("fighter", "green", SS15.global_position)
 
 func _physics_process(delta):
 	if is_instance_valid(DUMMY_T):

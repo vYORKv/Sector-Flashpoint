@@ -16,17 +16,24 @@ var state = ENGAGE
 var target = null
 var target_array = []
 
+export (NodePath) var patrol_path
+var patrol_points
+var patrol_index = 0
+var current_move = "MovePoint"
+
 var velocity = Vector2.ZERO
 var hitpoints = 1
 var shields = 0
 var shields_active = true
 var alliance = ""
 var type = ""
+var skill = 6 # 1 is super accurate, 10 is terrible accuracy : 5 Is hard, 6 is normal difficulty
 
 var max_speed = 0
 var fire_rate = 0
 var reloaded = true
-var can_shoot = true
+var can_shoot = false
+var vision_target = null
 
 var rfi_poly = PoolVector2Array([Vector2(-7, -2), Vector2(-7, 2), Vector2(-6, 5), Vector2(-4, 7), Vector2(1, 7), Vector2(4, 6), Vector2(6, 5), Vector2(7, 4), Vector2(7, -4), Vector2(6, -5), Vector2(4, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-6, -5)])
 var bfi_poly = PoolVector2Array([Vector2(-7, 6), Vector2(-3, 6), Vector2(1, 5), Vector2(1, 2), Vector2(6, 2), Vector2(7, 1), Vector2(7, -1), Vector2(6, -2), Vector2(1, -2), Vector2(1, -5), Vector2(-3, -6), Vector2(-7, -6)])
@@ -65,12 +72,16 @@ onready var Shield = $Shield
 onready var ShootTimer = $ShootTimer
 onready var Gun = $Gun
 onready var Aim = $Aim
-onready var ShootRange = $ShootRange
+onready var ShootRange1 = $ShootRange1
+onready var ShootRange2 = $ShootRange2
+onready var ShootRange3 = $ShootRange3
 onready var ShootSFX = $ShootSFX
 onready var DetectionRadius = $DetectionRadius
 onready var BufferRay = $Buffer
 
 func _ready():
+	if patrol_path:
+		patrol_points = get_node(patrol_path).curve.get_baked_points()
 	SetStats()
 	ShootTimer.set_wait_time(fire_rate)
 	ShootTimer.connect("timeout", self, "Reload")
@@ -78,12 +89,14 @@ func _ready():
 func Reload():
 	reloaded = true
 
-func RangeCheck():
-	var range_target = ShootRange.get_collider()
-	if range_target and range_target.alliance != alliance:
-		can_shoot = true
-	else:
-		can_shoot = false
+#func RangeCheck():
+#	var range_target1 = ShootRange1.get_collider()
+#	var range_target2 = ShootRange2.get_collider()
+#	var range_target3 = ShootRange3.get_collider()
+#	var ray_cone = [range_target1, range_target2, range_target3]
+#	for ray in ray_cone:
+#		if ray and ray.alliance != alliance:
+#			shoot()
 
 func Buffer():
 	var buffer_target = BufferRay.get_collider()
@@ -98,10 +111,10 @@ func _physics_process(delta):
 #		target = null
 #	else:
 #		TargetCheck(target_array)
-	var forward = (Aim.global_position - self.position).normalized()
-	var forward_x = forward.tangent()
+#	var forward = (Aim.global_position - self.position).normalized()
+#	var forward_x = forward.tangent()
 	
-	RangeCheck()
+#	RangeCheck()
 	
 	match state:
 		IDLE:
@@ -121,7 +134,9 @@ func _physics_process(delta):
 				var target_position = target.global_position
 				var direction = (t_flank_pos - self.position).normalized()
 				var direction_x = direction.tangent()
-				TurnSpeed(target_position, delta)
+				var dist = global_position.distance_to(target_position)
+				var prediction = target_position + target.velocity * (dist/skill) 
+				TurnSpeed(prediction, delta)
 				if Buffer():
 					velocity = velocity.move_toward(direction_x * max_speed, ACCELERATION * delta)
 				else:
@@ -150,13 +165,21 @@ func TurnSpeed(target_position, delta):
 	global_rotation = angle
 	
 
-func move2(point):
-	pass
+#func move2(delta):
+#	if !patrol_path:
+#		return
+#	var target = patrol_points[patrol_index]
+#	if position.distance_to(target) < 1:
+#		patrol_index = wrapi(patrol_index + 1, 0, patrol_points.size())
+#		target = patrol_points[patrol_index]
+#	var direction = (target - self.position).normalized()
+#	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
+#	TurnSpeed(target, delta)
 
 func move(delta):
-	var point = get_parent().get_node("MovePoint")
+	var point = get_parent().get_node(current_move)
 	var point_pos = point.global_position
-	var direction = (point_pos - self.position)
+	var direction = (point_pos - self.position).normalized()
 	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
 	TurnSpeed(point_pos, delta)
 
@@ -269,3 +292,14 @@ func _on_DetectionRadius_area_entered(area):
 		state = ENGAGE
 #		target_array.push_back(target)
 #		target = target_array[0]
+
+func _on_VisionCone_area_entered(area):
+	var target = area.get_parent()
+	vision_target = target
+	if target and target.alliance != alliance:
+		can_shoot = true
+
+func _on_VisionCone_area_exited(area):
+	var target = area.get_parent()
+	if target == vision_target:
+		can_shoot = false
