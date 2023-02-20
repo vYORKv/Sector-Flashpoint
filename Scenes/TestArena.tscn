@@ -82,7 +82,7 @@ position = Vector2( 92, -514 )
 position = Vector2( 4, -585 )
 
 [node name="PlayerSpawn" type="Node2D" parent="."]
-position = Vector2( -5, 819 )
+position = Vector2( 2, 790 )
 
 [node name="MovePoint" type="Node2D" parent="."]
 position = Vector2( 0, -6 )

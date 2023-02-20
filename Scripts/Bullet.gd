@@ -3,7 +3,7 @@ extends KinematicBody2D
 const SPEED = 300
 
 var velocity = Vector2()
-var target = null
+#var target = null
 var alliance = null
 
 const BULLET_HIT = preload("res://Scenes/Objects/BulletHit.tscn")
@@ -44,7 +44,7 @@ func _on_Hitbox_area_entered(area):
 	if victim.alliance == alliance:
 		pass
 	else:
-		victim.hit(bullet_position)
+		victim.Hit(bullet_position)
 		get_parent().add_child(bullet_hit)
 		bullet_hit.position = bullet_position
 		self.queue_free()

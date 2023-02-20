@@ -2,38 +2,23 @@ extends KinematicBody2D
 
 const ACCELERATION = 5
 const FRICTION = 4
-const TURN_SPEED = 4
-
-enum {
-	IDLE,
-	SEARCH,
-	MOVE,
-	ENGAGE,
-	WING
-}
-
-var state = ENGAGE
-var target = null
-var target_array = []
-
-export (NodePath) var patrol_path
-var patrol_points
-var patrol_index = 0
-var current_move = "MovePoint"
+#const SPEED = 10
+const TURN_SPEED = 0.2
 
 var velocity = Vector2.ZERO
-var hitpoints = 1
-var shields = 0
-var shields_active = true
+var combat_speed = true
+var max_speed = 3
+var reloaded = true
+var can_shoot = true
+var fire_rate = .5
 var alliance = "" # Generated on ShipSpawn()
 var type = "" # Generated on ShipSpawn()
-var skill = 6 # 1 is super accurate, 10 is terrible accuracy : 5 Is hard, 6 is normal difficulty
+var hitpoints = 1
+var shields = 2
+var shields_active = true
 
-var max_speed = 0
-var fire_rate = 0
-var reloaded = true
-var can_shoot = false
-var vision_target = null
+# NeuralNetwork Variables
+var decision = []
 
 # Collision polygons for all ships and types
 var rfi_poly = PoolVector2Array([Vector2(-7, -2), Vector2(-7, 2), Vector2(-6, 5), Vector2(-4, 7), Vector2(1, 7), Vector2(4, 6), Vector2(6, 5), Vector2(7, 4), Vector2(7, -4), Vector2(6, -5), Vector2(4, -6), Vector2(1, -7), Vector2(-4, -7), Vector2(-6, -5)])
@@ -66,98 +51,76 @@ const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
 
 onready var ShipSprite = $Sprite
-onready var ShipPolygon = $ShipPolygon
-onready var HurtPolygon = $Hurtbox/HurtPolygon
-onready var ShieldArea = $ShieldArea
-onready var Shield = $Shield
-onready var ShootTimer = $ShootTimer
+#onready var TurnSpeed = $Tween
 onready var Gun = $Gun
 onready var Aim = $Aim
-onready var ShootRange1 = $ShootRange1
-onready var ShootRange2 = $ShootRange2
-onready var ShootRange3 = $ShootRange3
+onready var Left = $Left
+onready var LeftRotate = $LeftRotate
+onready var RightRotate = $RightRotate
+onready var ShootTimer = $ShootTimer
 onready var ShootSFX = $ShootSFX
-onready var DetectionRadius = $DetectionRadius
-onready var BufferRay = $Buffer
+onready var ShipPolygon = $ShipPolygon
+onready var HurtPolygon = $HurtBox/HurtPolygon
+onready var ShieldArea = $ShieldArea
+onready var Shield = $Shield
 
 func _ready():
-	if patrol_path:
-		patrol_points = get_node(patrol_path).curve.get_baked_points()
-	SetStats()
 	ShootTimer.set_wait_time(fire_rate)
 	ShootTimer.connect("timeout", self, "Reload")
+	SetStats()
 
 func Reload():
 	reloaded = true
 
-#func RangeCheck():
-#	var range_target1 = ShootRange1.get_collider()
-#	var range_target2 = ShootRange2.get_collider()
-#	var range_target3 = ShootRange3.get_collider()
-#	var ray_cone = [range_target1, range_target2, range_target3]
-#	for ray in ray_cone:
-#		if ray and ray.alliance != alliance:
-#			shoot()
-
-func Buffer():
-	var buffer_target = BufferRay.get_collider()
-	if buffer_target and buffer_target.alliance != alliance:
-		return true
+# Input function here?
 
 func _physics_process(delta):
-#	var target_position = Vector2(5,5)
-#	var direction = (target_position - self.position).normalized()
+	# Find a way to point these variables towards directions from self
+	var front = (Aim.global_position - self.position).normalized() # self.position + "front"
+	var left = (Left.global_position - self.position).normalized()
+	var left_rotate = LeftRotate.global_position
+	var right_rotate = RightRotate.global_position
 	
-#	if !is_instance_valid(target_array):
-#		target = null
-#	else:
-#		TargetCheck(target_array)
-#	var forward = (Aim.global_position - self.position).normalized()
-#	var forward_x = forward.tangent()
-	
-#	RangeCheck()
-
-	match state:
-		IDLE:
-			pass
-		SEARCH:
-			DetectionRadius.monitoring = false
-			DetectionRadius.monitoring = true
-			Move(delta)
-		MOVE:
-			Move(delta)
-		WING:
-			pass
-		ENGAGE:
-			if target and is_instance_valid(target):
-				var target_flank = target.get_node("Flank/CollisionShape2D")
-				var t_flank_pos = target_flank.global_position
-				var target_position = target.global_position
-				var direction = (t_flank_pos - self.position).normalized()
-				var direction_x = direction.tangent()
-				var dist = global_position.distance_to(target_position)
-				var prediction = target_position + target.velocity * (dist/skill) 
-				TurnSpeed(prediction, delta)
-				if Buffer():
-					velocity = velocity.move_toward(direction_x * max_speed, ACCELERATION * delta)
-				else:
-					velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
-				if can_shoot and reloaded:
-					Shoot()
-					reloaded = false
-					ShootTimer.start()
-			else:
-				target = null
-				state = SEARCH
-#	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
 	var collision = move_and_collide(velocity)
 	if collision:
 		velocity = velocity.bounce(collision.normal)
 #		BumpSFX.play()
+	if decision == [0]: # Place this "if" tree in match state?
+		Cease()
+	elif decision == [1]:
+		Shoot()
+	elif decision == [2]:
+		Forward(front, delta)
+	elif decision == [3]:
+		Reverse(-front, delta)
+	elif decision == [4]:
+		Strafe(left, delta)
+	elif decision == [5]:
+		Strafe(-left, delta)
+	elif decision == [6]:
+		Rotate(left_rotate, delta)
+	elif decision == [7]:
+		Rotate(right_rotate, delta)
 
-func TurnSpeed(target_position, delta):
+#func _set_rotation(new_transform):
+#	# apply tweened x-vector of basis
+#	self.transform.x = new_transform
+#	# make x and y orthogonal and normalized
+#	self.transform = self.transform.orthonormalized()
+
+func Forward(direction, delta):
+	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
+#	Thruster.set_visible(true)
+
+func Reverse(direction, delta):
+	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
+
+func Strafe(direction, delta):
+	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
+
+func Rotate(rotation_direction, delta):
 	var rotation_speed = TURN_SPEED
-	var v = target_position - global_position
+	var v = rotation_direction - global_position
 	var angle = v.angle()
 	var r = global_rotation
 	var angle_delta = rotation_speed * delta
@@ -165,29 +128,17 @@ func TurnSpeed(target_position, delta):
 	angle = clamp(angle, r - angle_delta, r + angle_delta)
 	global_rotation = angle
 
-#func move2(delta):
-#	if !patrol_path:
-#		return
-#	var target = patrol_points[patrol_index]
-#	if position.distance_to(target) < 1:
-#		patrol_index = wrapi(patrol_index + 1, 0, patrol_points.size())
-#		target = patrol_points[patrol_index]
-#	var direction = (target - self.position).normalized()
-#	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
-#	TurnSpeed(target, delta)
+func Cease(): # AKA "Null" : Used to give the agent an option to not move or take action
+	pass
 
-func Move(delta):
-	var point = get_parent().get_node(current_move)
-	var point_pos = point.global_position
-	var direction = (point_pos - self.position).normalized()
-	velocity = velocity.move_toward(direction * max_speed, ACCELERATION * delta)
-	TurnSpeed(point_pos, delta)
-
-#func TargetCheck(array):
-#	var targets = array
-#	for x in targets:
-#		if !is_instance_valid(x):
-#			targets.remove(x)
+func Shoot():
+	var bullet = BULLET.instance()
+#	bullet.target = "enemy"
+	bullet.alliance = alliance
+	get_parent().add_child(bullet)
+	bullet.position = Gun.global_position
+	bullet.velocity = Aim.global_position - bullet.position
+	ShootSFX.play()
 
 func Hit(bullet):
 	if shields_active:
@@ -204,24 +155,12 @@ func Hit(bullet):
 		shields_active = false
 		ShieldArea.set_deferred("monitorable", false)
 
-func Shoot():
-	var bullet = BULLET.instance()
-#	bullet.target = "enemy"
-	bullet.alliance = alliance
-	get_parent().add_child(bullet)
-	bullet.position = Gun.global_position
-	bullet.velocity = Aim.global_position - bullet.position
-	ShootSFX.play()
-
 func Destroy():
 	var explosion = EXPLOSION.instance()
 	explosion.alliance = alliance
 	get_parent().add_child(explosion)
 	explosion.position = self.position
 	self.queue_free()
-
-func _on_Shield_animation_finished():
-	Shield.set_visible(false)
 
 func SetStats():
 	if type == "fighter":
@@ -285,21 +224,5 @@ func SetStats():
 			HurtPolygon.set_polygon(ybo_poly)
 			ShipSprite.set_texture(YELLOW_BOMBER)
 
-func _on_DetectionRadius_area_entered(area):
-	var detected = area.get_parent()
-	if detected.alliance != self.alliance:
-		target = detected
-		state = ENGAGE
-#		target_array.push_back(target)
-#		target = target_array[0]
-
-func _on_VisionCone_area_entered(area):
-	var target = area.get_parent()
-	vision_target = target
-	if target and target.alliance != alliance:
-		can_shoot = true
-
-func _on_VisionCone_area_exited(area):
-	var target = area.get_parent()
-	if target == vision_target:
-		can_shoot = false
+func _on_Shield_animation_finished():
+	Shield.set_visible(false)

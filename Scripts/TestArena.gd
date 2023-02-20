@@ -52,7 +52,7 @@ var dummy_dead = false
 #var ship_array = [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11]
 
 func _ready():
-	PlayerSpawner()
+#	PlayerSpawner()
 #	var dummy = DUMMY.instance()
 #	add_child(dummy)
 	var a1 = AST_SM.instance()
@@ -81,22 +81,32 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("ui_home"):
 		SpawnShips()
+	if event.is_action_pressed("ui_end"):
+		PlayerSpawner()
+	if event.is_action_pressed("ui_left"):
+		s4 = ShipSpawner("fighter", "red", SS4.global_position)
+	if event.is_action_pressed("ui_right"):
+		s8 = ShipSpawner("fighter", "yellow", SS8.global_position)
+	if event.is_action_pressed("ui_up"):
+		s12 = ShipSpawner("fighter", "green", SS12.global_position)
+	if event.is_action_pressed("ui_down"):
+		s1 = ShipSpawner("fighter", "blue", SS1.global_position)
 
 func SpawnShips():
-#	s1 = ShipSpawner("fighter", "blue", SS1.global_position)
-#	s2 = ShipSpawner("fighter", "blue", SS2.global_position)
-#	s3 = ShipSpawner("fighter", "blue", SS3.global_position)
-#	s4 = ShipSpawner("fighter", "red", SS4.global_position)
-#	s5 = ShipSpawner("fighter", "red", SS5.global_position)
-#	s6 = ShipSpawner("fighter", "red", SS6.global_position)
-#	s7 = ShipSpawner("fighter", "red", SS7.global_position)
-#	s8 = ShipSpawner("fighter", "yellow", SS8.global_position)
-#	s9 = ShipSpawner("fighter", "yellow", SS9.global_position)
-#	s10 = ShipSpawner("fighter", "yellow", SS10.global_position)
-#	s11 = ShipSpawner("fighter", "yellow", SS11.global_position)
-#	s12 = ShipSpawner("fighter", "green", SS12.global_position)
-#	s13 = ShipSpawner("fighter", "green", SS13.global_position)
-#	s14 = ShipSpawner("fighter", "green", SS14.global_position)
+	s1 = ShipSpawner("fighter", "blue", SS1.global_position)
+	s2 = ShipSpawner("fighter", "blue", SS2.global_position)
+	s3 = ShipSpawner("fighter", "blue", SS3.global_position)
+	s4 = ShipSpawner("fighter", "red", SS4.global_position)
+	s5 = ShipSpawner("fighter", "red", SS5.global_position)
+	s6 = ShipSpawner("fighter", "red", SS6.global_position)
+	s7 = ShipSpawner("fighter", "red", SS7.global_position)
+	s8 = ShipSpawner("fighter", "yellow", SS8.global_position)
+	s9 = ShipSpawner("fighter", "yellow", SS9.global_position)
+	s10 = ShipSpawner("fighter", "yellow", SS10.global_position)
+	s11 = ShipSpawner("fighter", "yellow", SS11.global_position)
+	s12 = ShipSpawner("fighter", "green", SS12.global_position)
+	s13 = ShipSpawner("fighter", "green", SS13.global_position)
+	s14 = ShipSpawner("fighter", "green", SS14.global_position)
 	s15 = ShipSpawner("fighter", "green", SS15.global_position)
 
 func _physics_process(delta):

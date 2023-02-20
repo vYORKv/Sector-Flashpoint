@@ -1,0 +1,21 @@
+	Today's Goals
+
+1) Create Custom Ship Spawns for Test Arena ***
+
+2) Create ShipML.tscn **
+	- Figure out how inputs work with neural network
+		Functions: Shoot, Forward, Reverse, StrafeLeft, StrafeRight, RotateLeft, RotateRight, Null(Cease) 
+		Feed Input (Data): Enemy, Hitpoints(Self), HitsOnEnemy, HitsOnSelf, EnemyDeath, SelfDeath
+
+3) Build Neural Network
+
+
+
+Notes:
+
+PascalCasing for my functions, snake_casing for native Godot functions, _snake_casing with preceding underscore for self-defined Godot functions
+
+variables receive snake_casing, constants are capitalized SNAKE_CASING, variables referencing a node in parent node are PascalCasing
+
+
+WATCH STREAM AT 3 HOURS 49 MINUTES FOR ARRAY CONFUSION

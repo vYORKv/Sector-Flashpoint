@@ -33,13 +33,12 @@ onready var HurtPolygon = $HurtBox/HurtPolygon
 onready var ShieldArea = $ShieldArea
 onready var Shield = $Shield
 
-
 func _ready():
 	ShootTimer.set_wait_time(fire_rate)
 	ShootTimer.connect("timeout", self, "Reload")
 	var poly = ShipPolygon.get_polygon() # Will need to use polygon array to set shapes for each ship on spawn
 
-func debug():
+func Debug():
 	pass
 
 func Reload():
@@ -58,12 +57,12 @@ func _input(event):
 			print(max_speed)
 	if event.is_action_pressed("shoot"):
 		if can_shoot:
-			shoot()
+			Shoot()
 			reloaded = false
 			can_shoot = false
 			ShootTimer.start()
 	if event.is_action_pressed("ui_accept"):
-		destroy()
+		Destroy()
 	if event.is_action_pressed("forward"):
 		ThrusterSFX.play()
 	if event.is_action_released("forward"):
@@ -111,16 +110,16 @@ func _set_rotation(new_transform):
 	# make x and y orthogonal and normalized
 	self.transform = self.transform.orthonormalized()
 
-func shoot():
+func Shoot():
 	var bullet = BULLET.instance()
-	bullet.target = "enemy"
+#	bullet.target = "enemy"
 	bullet.alliance = alliance
 	get_parent().add_child(bullet)
 	bullet.position = Gun.global_position
 	bullet.velocity = Aim.global_position - bullet.position
 	ShootSFX.play()
 
-func hit(bullet):
+func Hit(bullet):
 	if shields_active:
 		Shield.look_at(bullet)
 		Shield.set_frame(0)
@@ -131,13 +130,13 @@ func hit(bullet):
 	else:
 		hitpoints -= 1
 		if hitpoints <= 0:
-			destroy()
+			Destroy()
 	if shields == 0:
 		shields_active = false
 		print(shields_active)
 		ShieldArea.set_deferred("monitorable", false)
 
-func destroy():
+func Destroy():
 	var explosion = EXPLOSION.instance()
 	explosion.alliance = alliance
 	get_parent().add_child(explosion)

@@ -22,7 +22,7 @@ func _ready():
 	print("Dummy  ", poly)
 	Polygon.set_polygon(rf_poly)
 
-func hit(bullet):
+func Hit(bullet):
 	if shields_active:
 		Shield.look_at(bullet)
 		Shield.set_frame(0)
@@ -33,12 +33,12 @@ func hit(bullet):
 	else:
 		hitpoints -= 1
 		if hitpoints == 0:
-			destroy()
+			Destroy()
 	if shields == 0:
 		shields_active = false
 		ShieldArea.set_deferred("monitorable", false)
 
-func destroy():
+func Destroy():
 	var explosion = EXPLOSION.instance()
 	explosion.alliance = alliance
 	get_parent().add_child(explosion)

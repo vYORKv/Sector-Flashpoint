@@ -12,11 +12,11 @@ onready var sprite = $Sprite
 func _ready():
 	randomize()
 	
-	sprite.set_texture(get_sprite())
+	sprite.set_texture(GetSprite())
 
-func get_sprite():
+func GetSprite():
 	var random_sprite = sprites[randi() % sprites.size()]
 	return random_sprite
 
-func hit(bullet):
+func Hit(bullet):
 	pass
