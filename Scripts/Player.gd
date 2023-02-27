@@ -8,14 +8,15 @@ const TURN_SPEED = 0.2
 
 var velocity = Vector2.ZERO
 var combat_speed = true
-var max_speed = 3
+var max_speed = 2 # Changed from 3
 var reloaded = true
 var can_shoot = true
 var fire_rate = .5
-var alliance = "blue"
+var alliance = "red"
 var hitpoints = 1
 var shields = 2
 var shields_active = true
+var ship_id = "Player"
 
 const BULLET = preload("res://Scenes/Objects/Bullet.tscn")
 const EXPLOSION = preload("res://Scenes/Objects/ShipExplosion.tscn")
@@ -126,14 +127,14 @@ func Hit(bullet):
 		Shield.set_visible(true)
 		Shield.play(alliance)
 		shields -= 1
-		print(shields)
+#		print(shields)
 	else:
 		hitpoints -= 1
 		if hitpoints <= 0:
 			Destroy()
 	if shields == 0:
 		shields_active = false
-		print(shields_active)
+#		print(shields_active)
 		ShieldArea.set_deferred("monitorable", false)
 
 func Destroy():

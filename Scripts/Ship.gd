@@ -14,7 +14,10 @@ enum {
 
 var state = ENGAGE
 var target = null
+var target_log = null
 var target_array = []
+var target_dict = {}
+var ship_id
 
 export (NodePath) var patrol_path
 var patrol_points
@@ -81,11 +84,17 @@ onready var DetectionRadius = $DetectionRadius
 onready var BufferRay = $Buffer
 
 func _ready():
+	randomize()
+	GetId()
 	if patrol_path:
 		patrol_points = get_node(patrol_path).curve.get_baked_points()
 	SetStats()
 	ShootTimer.set_wait_time(fire_rate)
 	ShootTimer.connect("timeout", self, "Reload")
+
+func GetId():
+	ship_id = randi() % 10 + 1
+	print(alliance.to_upper(), " ", ship_id)
 
 func Reload():
 	reloaded = true
@@ -104,6 +113,29 @@ func Buffer():
 	if buffer_target and buffer_target.alliance != alliance:
 		return true
 
+func UpdateTargets():
+	for k in target_dict.keys():
+		var v = target_dict.get(k)
+		if is_instance_valid(v):
+			print(target_dict)
+		else:
+			target_dict.erase(k)
+#	for i in target_dict.values():
+#		if is_instance_valid(i):
+##			print("Target is ship ID ", target_log.ship_id, " of ", target_log.alliance.to_upper(), " alliance.")
+#			print(i)
+#		else:
+#			target_dict.erase(i)
+
+func CheckTargets():
+	if target_log:
+		if is_instance_valid(target_log):
+			print("Target is ship ID ", target_log.ship_id, " of ", target_log.alliance.to_upper(), " alliance.")
+		else:
+			target_log = null
+	else:
+		print("No target!")
+
 func _physics_process(delta):
 #	var target_position = Vector2(5,5)
 #	var direction = (target_position - self.position).normalized()
@@ -114,9 +146,11 @@ func _physics_process(delta):
 #		TargetCheck(target_array)
 #	var forward = (Aim.global_position - self.position).normalized()
 #	var forward_x = forward.tangent()
-	
 #	RangeCheck()
-
+#	if alliance == "red":
+#		print(target_dict)
+	UpdateTargets()
+	
 	match state:
 		IDLE:
 			pass
@@ -218,6 +252,7 @@ func Destroy():
 	explosion.alliance = alliance
 	get_parent().add_child(explosion)
 	explosion.position = self.position
+	print(alliance.to_upper(), " ", ship_id, " is dead!")
 	self.queue_free()
 
 func _on_Shield_animation_finished():
@@ -225,7 +260,7 @@ func _on_Shield_animation_finished():
 
 func SetStats():
 	if type == "fighter":
-		max_speed = 3
+		max_speed = 2 # Changed from 3 (2 is new best for slower combat)
 		fire_rate = .75
 		shields = 1
 		if alliance == "red":
@@ -287,11 +322,23 @@ func SetStats():
 
 func _on_DetectionRadius_area_entered(area):
 	var detected = area.get_parent()
-	if detected.alliance != self.alliance:
-		target = detected
-		state = ENGAGE
-#		target_array.push_back(target)
-#		target = target_array[0]
+	if detected == self or detected.alliance == alliance or alliance == "blue":
+		pass
+	else:
+		if detected.alliance != self.alliance:
+			target = detected
+			state = MOVE # ENGAGE
+		target_log = detected
+		print("Target is ship ID ", target_log.ship_id, " of ", target_log.alliance.to_upper(), " alliance.")
+		target_dict[detected.get_instance_id()] = target_log
+		print(target_dict)
+		#target_array.push_back(target)
+		#target = target_array[0]
+
+func _on_DetectionRadius_area_exited(area):
+	var exiting_ship = area.get_parent()
+	if exiting_ship == target_log:
+		target_log = null
 
 func _on_VisionCone_area_entered(area):
 	var target = area.get_parent()

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-const SPEED = 300
+const SPEED = 200 # Changed from 300 (Now best is 200 for slower combat)
 
 var velocity = Vector2()
 #var target = null

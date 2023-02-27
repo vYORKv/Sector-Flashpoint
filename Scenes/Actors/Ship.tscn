@@ -83,6 +83,7 @@ shape = SubResource( 3 )
 
 [node name="DetectionRadius" type="Area2D" parent="."]
 scale = Vector2( 32, 32 )
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius"]
 shape = SubResource( 4 )
@@ -116,15 +117,17 @@ enabled = true
 
 [node name="Buffer" type="RayCast2D" parent="."]
 rotation = -1.5708
-scale = Vector2( 0.5, 6 )
+scale = Vector2( 1, 4.5 )
 enabled = true
 
 [node name="VisionCone" type="Area2D" parent="."]
+monitorable = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VisionCone"]
 polygon = PoolVector2Array( 10, 0, 111, 132, 141, 95, 160, 24, 160, -26, 147, -85, 115, -130 )
 
 [connection signal="animation_finished" from="Shield" to="." method="_on_Shield_animation_finished"]
 [connection signal="area_entered" from="DetectionRadius" to="." method="_on_DetectionRadius_area_entered"]
+[connection signal="area_exited" from="DetectionRadius" to="." method="_on_DetectionRadius_area_exited"]
 [connection signal="area_entered" from="VisionCone" to="." method="_on_VisionCone_area_entered"]
 [connection signal="area_exited" from="VisionCone" to="." method="_on_VisionCone_area_exited"]
